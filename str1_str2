@@ -1,0 +1,95 @@
+<?php 
+
+	session_start();
+
+	
+
+	$servername = "localhost";
+
+	$user = "root";
+
+	$bpassword="";
+
+	$basename = "korisnik";
+
+	
+
+	$dbc = mysqli_connect($servername, $user, $bpassword, $basename) or
+
+		die('Error connecting to MySql server.' . mysqli_error());
+
+		
+
+	if($dbc){
+
+		echo"
+
+			<form action='stranica1.php' method='post' name='prijava'>
+
+			Korisničko ime: <br>
+
+			<input type='text' id = 'k_ime' name = 'k_ime' /><br>
+
+			Lozinka: <br>
+
+			<input type='password' id = 'password' name='password'/><br>
+
+			<button type='submit'>Pošalji</button><br>
+
+		";
+
+		
+
+		$lozinka = $_POST['password'];
+
+		$hashed_password = password_hash($lozinka, CRYPT_BLOWFISH);
+
+		$userName = $_POST['k_ime'];
+
+		
+
+		$result = mysqli_query($dbc, $query) or die('Error');
+
+		
+
+		if($result){
+
+			while( $row = mysqli_fetch_array($result)) {
+
+				if($row['korisnicko_ime'] = $userName){
+
+					if(password_verify($_POST['password'],$hashed_password){
+
+						$_SESSION['username'] = $userName;
+
+						echo "<br><a href='stranica2.php'>Sljedeća stranica</a>";
+
+					}
+
+				}
+
+				else{
+
+					echo "Unijeli ste pogrešno korisničko ime ili lozinku.";
+
+				}
+
+			}
+
+		}
+
+		
+
+	}
+
+?>
+
+<?php
+
+	session_start();
+
+	
+
+	echo "Dobro došli" . $_SESSION['username'];
+
+?>
