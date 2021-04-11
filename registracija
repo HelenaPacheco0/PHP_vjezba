@@ -1,0 +1,95 @@
+<?php
+
+	$servername = "localhost";
+
+	$username = "root";
+
+	$password = "";
+
+	$basename = "korisnik";
+
+
+
+	$dbc = mysqli_connect($servername, $username, $password, $basename) or 
+
+	die('Error connecting to MySQL server.' . mysqli_error());
+
+
+
+	if($dbc){
+
+	echo "<form action = 'index.php' method = 'post' name = 'prijava'>
+
+			Korisničko ime: <br>
+
+			<input type='text' id = 'username' name = 'username'/> <br>
+
+			Lozinka:<br>
+
+			<input type='passwprd' id = 'password' name='password'/> <br>
+
+			<button type='submit'>Pošalji</button>";
+
+	}
+
+
+
+	$lozinka = $_POST['sifra'];
+
+	$hashed_password = password_hash($lozinka, CRYPT_BLOWFISH);
+
+	$userName = $_POST['username'];
+
+
+
+	$result = mysqli_query($dbc, $query) or die('Error querying databese');
+
+	mysqli_close($dbc);
+
+
+
+	if($result){
+
+		while($row = mysqli_fetch_array($result)){
+
+			if( $row['username'] != $userName){
+
+				if(password_verify($_POST['lozinka'], $hashed_password){
+
+				$uspjesnaPrijava = true;
+
+				$query = "INSERT INTO korisnik (username, password) values (?,?)";
+
+				$stmt = mysqli_stmt_init($dbc);
+
+				if (mysqli_stmt_prepare($stms, $query)){
+
+					mysqli_stmt_bind_param($stms, 'ss',$username, $password);
+
+					mysqli_stmt_execute($stmt);
+
+					
+
+				}
+
+			}}
+
+	else{
+
+		$uspjesnaPrijava = false;
+
+		echo "Unjeli ste pogrešno korisničko ime ili lozinku";
+
+
+
+	}}
+
+
+
+
+
+?>
+
+
+
+?>
